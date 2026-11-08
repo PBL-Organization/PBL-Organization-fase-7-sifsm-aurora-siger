@@ -1,0 +1,7 @@
+codigo_modulo,nome_modulo,tipo_modulo,nivel_critico,consumo_kwh,temperatura_c,status_operacional
+MOD-HAB-01,Habitação Alpha,Habitação,3,145.5,22.4,OPERACIONAL
+MOD-AGR-01,Estufa Hidropônica 1,Agricultura,2,88.0,26.1,OPERACIONAL
+MOD-ENG-01,Matriz Solar Principal,Energia,3,310.2,45.0,ALERTA
+MOD-LAB-01,Laboratório de Pesquisa,Laboratório,1,62.4,19.8,OPERACIONAL
+MOD-MED-01,Unidade Médica de Emergência,Suporte Médico,3,95.0,21.5,OPERACIONAL
+MOD-REC-01,Reciclagem de Água e Ar,Suporte Vital,3,210.0,30.2,ALERTA
