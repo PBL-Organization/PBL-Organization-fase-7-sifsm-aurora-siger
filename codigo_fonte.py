@@ -1,13 +1,14 @@
 """
 SIFSM - Sistema Integrado de Futuro Sustentável em Marte
 Arquivo: codigo_fonte.py
-Descrição: Core Backend finalizado com tratamento de fluxo, validação de domínio
-           e atualização inteligente sem perda de dados.
+Descrição: Core Backend finalizado com tratamento de fluxo, validação de domínio,
+           operações CRUD em SQLite e integração com agentes de IA (Frente C).
 """
 
 import os
 import sqlite3
 import sys
+from automacao_ia import AgenteTriador
 
 # Caminho do banco de dados local da colônia
 DB_PATH = "aurora_siger.db"
@@ -252,7 +253,6 @@ def alterar_modulo():
         alterar_tipo = input("Deseja alterar o tipo do módulo? (S/N): ").strip().upper()
         if alterar_tipo == 'S':
             tipo_escolhido = escolher_tipo_modulo()
-            # Se o usuário digitar 'voltar' na escolha do tipo, mantemos o tipo atual em vez de cancelar tudo
             novo_tipo = tipo_escolhido if tipo_escolhido is not None else registro_atual['tipo_modulo']
             if tipo_escolhido is None:
                 print("[AVISO] Alteração de tipo cancelada. Mantendo o tipo anterior.")
@@ -329,10 +329,11 @@ def menu_principal():
         print(" 2. Listar Módulos e Diagnóstico Sustentável (Read)")
         print(" 3. Alterar Módulo (Nome, Tipo, Consumo, Temp) (Update)")
         print(" 4. Excluir Módulo da Colônia (Delete)")
-        print(" 5. Sair do Sistema")
+        print(" 5. Consultar Inteligência Artificial da Colônia (Agentes)")
+        print(" 6. Sair do Sistema")
         print("========================================================")
 
-        opcao = ler_entrada_segura("Escolha uma opção (1-5): ", int)
+        opcao = ler_entrada_segura("Escolha uma opção (1-6): ", int)
         
         if opcao is None:
             continue
@@ -346,10 +347,20 @@ def menu_principal():
         elif opcao == 4:
             excluir_modulo()
         elif opcao == 5:
+            print("\n--- [MODO DE INTELIGÊNCIA ARTIFICIAL - SIFSM] ---")
+            codigo_alvo = ler_entrada_segura("Digite o código do módulo para análise dos agentes (ex: MOD-ENG-01): ", str)
+            if codigo_alvo:
+                pergunta = input("O que deseja verificar? (Ex: 'energia' ou 'temperatura'): ").strip()
+                triador = AgenteTriador()
+                resultado_ia = triador.gerenciar_solicitacao(pergunta, codigo_alvo)
+                print("\n" + "="*50)
+                print(resultado_ia)
+                print("="*50)
+        elif opcao == 6:
             print("\n[ENCERRANDO] Fechando conexão com o SIFSM. Até logo!")
             sys.exit(0)
         else:
-            print("[OPÇÃO INVÁLIDA] Digite um número de 1 a 5.")
+            print("[OPÇÃO INVÁLIDA] Digite um número de 1 a 6.")
 
 
 if __name__ == "__main__":
